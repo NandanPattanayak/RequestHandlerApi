@@ -8,3 +8,6 @@ class demoModels(models.Model):
 class demo2Model(models.Model):
     name = models.CharField(max_length=100)
     collections = models.JSONField()
+class NewModel(models.Model):
+    name = models.CharField(max_length=100)
+    collections = models.JSONField()

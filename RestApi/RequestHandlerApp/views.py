@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import demoModels,demo2Model
-from .serializers import demoModelsSerializer,demo2ModelsSerializer
+from .models import demoModels,demo2Model,NewModel
+from .serializers import demoModelsSerializer,demo2ModelsSerializer ,NewModelsSerializer
 import csv
 from rest_framework import status
 from collections import OrderedDict
@@ -30,7 +30,9 @@ def HomeView(request):
                 my_list = []
                 for k,v in data.items():
                    my_list.append(v)
-                final_data = {
+                try:
+                    if my_list[0]!='' and my_list[1]!='' and my_list[2]!='' and my_list[3]!=''and my_list[4]!='' and my_list[5]!='' and my_list[6]!='':
+                        final_data = {
                         "name":"String",
                         "collections":{"type" : "FeatureCollection",
                         "features":[{
@@ -49,11 +51,13 @@ def HomeView(request):
                              },
                              }]} 
                              }
-                serializers = demoModelsSerializer(data=final_data)
-                if serializers.is_valid():
-                    serializers.save()
-            all_data = demoModels.objects.all()
-            serializers = demoModelsSerializer(all_data,many=True)
+                    serializers = NewModelsSerializer(data=final_data)
+                    if serializers.is_valid():
+                        serializers.save()
+                except Exception as e:
+                    print(e)
+            all_data = NewModel.objects.all()
+            serializers = NewModelsSerializer(all_data,many=True)
             return Response(serializers.data,status=status.HTTP_200_OK)
         
         elif (str(accept_file).split('.')[-1] == 'xlsx'):
@@ -66,35 +70,38 @@ def HomeView(request):
             final_data = {}
             for (k,v) in data.items():
                 for i in v:
-                    final_data = {
-                            "name":"String",
-                            "collections":{"type" : "FeatureCollection",
-                            "features":[{
-                                "type": "Feature",
-                                "geometry":{
-                                "type": "Point",
-                                "Coordinates":[i[0],i[1]],
-                                },
-                                "properties": {
-            
-                                col_list[2]: i[2],
-                                col_list[3]: i[3],
-                                col_list[4]: i[4],
-                                col_list[5]: i[5],
-                                col_list[6]: i[6]
-                                },
-                                }]} 
-                                }
-                    print(final_data)
-                    serializers = demoModelsSerializer(data=final_data)
-                    if serializers.is_valid():
-                        serializers.save()
-            all_data = demoModels.objects.all()
-            serializers = demoModelsSerializer(all_data,many=True)
+                    try:
+                        if i[0]!='' and i[1]!='' and i[2]!='' and i[3]!=''and i[4]!='' and i[5]!='' and i[6]!='':
+                            final_data = {
+                                "name":"String",
+                                "collections":{"type" : "FeatureCollection",
+                                "features":[{
+                                    "type": "Feature",
+                                    "geometry":{
+                                    "type": "Point",
+                                    "Coordinates":[i[0],i[1]],
+                                    },
+                                    "properties": {
+                
+                                    col_list[2]: i[2],
+                                    col_list[3]: i[3],
+                                    col_list[4]: i[4],
+                                    col_list[5]: i[5],
+                                    col_list[6]: i[6]
+                                    },
+                                    }]} 
+                                    }
+                    
+                        serializers = NewModelsSerializer(data=final_data)
+                        if serializers.is_valid():
+                            serializers.save()
+                    except Exception as e:
+                        print(e)
+            all_data = NewModel.objects.all()  
+            serializers = NewModelsSerializer(all_data,many=True)
             return Response(serializers.data,status=status.HTTP_200_OK)
         elif (str(accept_file).split('.')[-1] == 'xls'):
             data = pd.read_excel(accept_file)
-            print(data)
             col= data.columns
             col_list = []
             for i in col:
@@ -103,29 +110,58 @@ def HomeView(request):
             final_data = {}
             for (k,v) in data.items():
                 for i in v:
-                    final_data = {
-                            "name":"String",
-                            "collections":{"type" : "FeatureCollection",
-                            "features":[{
-                                "type": "Feature",
-                                "geometry":{
-                                "type": "Point",
-                                "Coordinates":[i[0],i[1]],
-                                },
-                                "properties": {
-            
-                                col_list[2]: i[2],
-                                col_list[3]: i[3],
-                                col_list[4]: i[4],
-                                col_list[5]: i[5],
-                                col_list[6]: i[6]
-                                },
-                                }]} 
-                                }
-                    print(final_data)
-                    serializers = demoModelsSerializer(data=final_data)
-                    if serializers.is_valid():
-                        serializers.save()
-            all_data = demoModels.objects.all()  
-            serializers = demoModelsSerializer(all_data,many=True)
+                    try:
+                        if i[0]!='' and i[1]!='' and i[2]!='' and i[3]!=''and i[4]!='' and i[5]!=''and i[6]!='':
+                            final_data = {
+                                "name":"String",
+                                "collections":{"type" : "FeatureCollection",
+                                "features":[{
+                                    "type": "Feature",
+                                    "geometry":{
+                                    "type": "Point",
+                                    "Coordinates":[i[0],i[1]],
+                                    },
+                                    "properties": {
+                
+                                    col_list[2]: i[2],
+                                    col_list[3]: i[3],
+                                    col_list[4]: i[4],
+                                    col_list[5]: i[5],
+                                    col_list[6]: i[6]
+                                    },
+                                    }]} 
+                                    }
+                    
+                        serializers = NewModelsSerializer(data=final_data)
+                        if serializers.is_valid():
+                            serializers.save()
+                    
+                    except Exception as e:
+                        print(e)
+            all_data = NewModel.objects.all()  
+            serializers = NewModelsSerializer(all_data,many=True)
             return Response(serializers.data,status=status.HTTP_200_OK)
+               
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
